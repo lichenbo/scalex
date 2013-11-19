@@ -41,18 +41,18 @@ object RegexDef {
   def check(reg:String) = 
     for (regchar <- reg.toList) regchar match {
     case token_pattern(c) => {
+      if (symbol_stack.top != '|' && canEvaluate(symbol_stack.top, '+')) {
+        eval(symbol_stack.top)
+      }
       char_stack.push(Literal(c(0)))
-      if (symbol_stack.top != '|') {
-        symbol_stack.push('+')
-      }
+      symbol_stack.push('+')
     }
-    case '*' => 
+    case '*' => {
       if(canEvaluate(symbol_stack.top,regchar)) {
-        val op = char_stack.pop
-        char_stack.push(Star(op))
-      } else {
-        symbol_stack.push('*')
+        eval(symbol_stack.top)
       }
+      symbol_stack.push('*')
+    }
     case '(' => symbol_stack.push('(')
     case ')' =>
     case '|' => 
