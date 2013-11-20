@@ -15,7 +15,7 @@ public class ParserExprTest {
 
 	@Test
 	public void testCheck3() {
-		assertEquals("abc",RegexDef.check("abc"),new Concat(new Concat(new Literal('a'),new Literal('b')),new Literal('c')));
+		assertEquals("a|b|c",RegexDef.check("a|b|c"),new Union(new Union(new Literal('a'), new Literal('b')), new Literal('c')));
 	}
 	@Test
 	public void testCheck4() {
