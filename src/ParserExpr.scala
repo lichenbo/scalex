@@ -1,4 +1,5 @@
 import scala.collection.mutable.Stack
+import scala.util.matching.Regex
 
 abstract class Expr
 case class Star(exp:Expr) extends Expr
@@ -17,7 +18,7 @@ object RegexDef {
   val char_stack: Stack[Expr] = new Stack
   private val pri = Map('*'->3,'|'->2,'+'->1)
   
-  val token_pattern = "[a-zA-Z_]".r
+  val token_pattern = "([a-zA-Z_])".r
   private def canEvaluate (before:Char, current:Char) = pri(before)>=pri(current) 
   private def eval (c:Char) = c match {
     case '+' => {
@@ -35,7 +36,7 @@ object RegexDef {
       char_stack.push(Union(op1,op2))
     }
   }
-  
+
   def check(reg:String) = 
     for (regchar <- reg.toList) regchar match {
     case token_pattern(c) => {
