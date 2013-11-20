@@ -11,7 +11,7 @@ object ParserExpr {
 	def main(args:Array[String]) {
 	  println(RegexDef.check("abc"))
 	  println(RegexDef.check("ab|c"))
-	  println(RegexDef.check("a|bc"))
+	  println(RegexDef.check("a|b|c"))
 	  println(RegexDef.check("abc|def|g"))
 	  println(RegexDef.check("a"))
 	  println(RegexDef.check("a*"))
@@ -61,7 +61,7 @@ object RegexDef {
 			println("CharStack:" + char_stack)
 	}
 
-	def check(reg:String) {
+	def check(reg:String):Expr = {
 		for (regchar <- reg.toList) {
 			regchar.toString match {    
 			case token_pattern(c) => {
@@ -81,9 +81,9 @@ object RegexDef {
 				canConcat = true
 			}
 			case "(" => {
-				while(symbol_stack.length > 0 && canEvaluate(symbol_stack.top,regchar)) {
-					eval(symbol_stack.pop)
-				}
+//				while(symbol_stack.length > 0 && canEvaluate(symbol_stack.top,regchar)) {
+//					eval(symbol_stack.pop)
+//				}
 				if (canConcat) {
 				  symbol_stack.push('+')
 				}
