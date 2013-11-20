@@ -10,7 +10,7 @@ public class ParserExprTest {
 	}
 	@Test
 	public void testCheck2() {
-		assertEquals("abc",RegexDef.check("abc"),new Concat(new Concat(new Literal('a'),new Literal('b')),new Literal('c')));
+		assertEquals("ab|c",RegexDef.check("ab|c"),new Union(new Concat(new Literal('a'), new Literal('b')), new Literal('c')));
 	}
 
 	@Test
