@@ -30,6 +30,10 @@ object ParserExpr {
 	  println(RegexDef.check("a(bc)"))
 	  println(RegexDef.check("a|b(cd)"))
 	  println(RegexDef.check("a|(c|d)"))
+	  println(RegexDef.check("(a|b)|cd"))
+	  println(RegexDef.check("(a|b|c)d|e"))
+	  println(RegexDef.check("(ab)*"))
+	  println(RegexDef.check("(a|b*|c)*d*|e*"))
 	} 
 }
 
@@ -81,9 +85,6 @@ object RegexDef {
 				canConcat = true
 			}
 			case "(" => {
-//				while(symbol_stack.length > 0 && canEvaluate(symbol_stack.top,regchar)) {
-//					eval(symbol_stack.pop)
-//				}
 				if (canConcat) {
 				  symbol_stack.push('+')
 				}
