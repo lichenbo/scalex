@@ -1,5 +1,4 @@
 import scala.collection.mutable.Stack
-import scala.util.matching.Regex
 
 abstract class Expr
 case class Star(exp:Expr) extends Expr
