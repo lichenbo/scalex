@@ -3,3 +3,5 @@ bin/
 .cache
 .classpath
 .project
+.idea/
+*.iml
