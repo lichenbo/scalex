@@ -49,13 +49,17 @@ object Reg2NFA {
       new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
     }
   }
-  
-}
-
-class State {
+  class State {
   val relationMap = new mutable.HashMap[Char,mutable.Set[State]] with mutable.MultiMap[Char,State]
 
   def epsClosure: Set[State] = if (relationMap.contains('@')) relationMap('@').toSet | relationMap('@').toSet.flatMap((s:State) => s.epsClosure) + this else Set()
+  def move(c:Char):Set[State] = 
+    epsClosure.map((s:State) => 
+      if (s.relationMap.contains(c)) 
+        s.relationMap(c)
+      else Set()
+    ).flatten
+  
 }
 
 class StateGraph(val list:List[State], val startState:State, val endState:State){ 
@@ -68,5 +72,8 @@ class StateGraph(val list:List[State], val startState:State, val endState:State)
     })
     "epsClosure: " + startState.epsClosure.toString
   }
+}
+
+
 }
 
