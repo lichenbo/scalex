@@ -11,7 +11,11 @@ object NFA2DFA {
   	buildState(startState)
   	val sg = new StateGraph(startState)
   	sg.addState(startState)
-  	
+  	for (s <- sg.set) {
+  	  if (s.built == false) {
+  	    buildState(s)
+  	  }
+  	}
     
     def buildState(s:State) = {
       for (symbol:Char <- symbolTable) {
@@ -23,7 +27,9 @@ object NFA2DFA {
         }
         s.relationMap(symbol) = newState 
       }
+      s.built = true
     }
+    
     return sg 
   }
   
@@ -50,6 +56,6 @@ object NFA2DFA {
   }
   
   class State (val nfaStateList:Set[Reg2NFA.State]){
-    val relationMap:mutable.HashMap[Char,State] = new mutable.HashMap[Char,State]()]
+    var built:Boolean = false
+    val relationMap:mutable.HashMap[Char,State] = mutable.HashMap[Char,State]()]
   }
-}
