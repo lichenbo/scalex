@@ -1,15 +1,15 @@
 import scala.collection.mutable
 object NFA2DFA {
   def main(args:Array[String]) {
-    convert(Reg2NFA.convert(RegexDef.check("a|bc")))
+    println(convert(Reg2NFA.convert(RegexDef.check("a|bc"))))
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
     val symbolTable:Set[Char] = nfa.list.foldLeft(Set[Char]())((ss:Set[Char],s:Reg2NFA.State) => ss | s.relationMap.keys.toSet) -- Set('@')
     assert(symbolTable.contains('@') == false)
     val startState = new State(nfa.startState.epsClosure)
-  	buildState(startState)
   	val sg = new StateGraph(startState)
+  	buildState(startState)
   	sg.addState(startState)
   	for (s <- sg.set) {
   	  if (s.built == false) {
@@ -52,10 +52,28 @@ object NFA2DFA {
         }
       }
     }
+    override def toString() = {
+      for (m <- set) {
+        println(m)
+        m.relationMap.map(ss => {
+          println(ss._1 + ":" + ss._2)
+        })
+      }
+      "Set: " + set.toString + '\n' +
+      "startState: " + startState + '\n' + 
+      "endState: " + endState
+    }
 
   }
   
   class State (val nfaStateList:Set[Reg2NFA.State]){
     var built:Boolean = false
-    val relationMap:mutable.HashMap[Char,State] = mutable.HashMap[Char,State]()]
+    val relationMap:mutable.HashMap[Char,State] = mutable.HashMap[Char,State]()
+//    override def toString() = {
+//      for (m <- relationMap) {
+//	      println("state: " + hashCode.toString + ": " + m._1 + "->" + m._2)
+//      }
+//      ""
+//    }
   }
+}

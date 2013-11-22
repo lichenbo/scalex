@@ -3,8 +3,6 @@ import scala.collection.mutable
 object Reg2NFA {
   def main(args:Array[String]) {
     println(convert(RegexDef.check("a|bc")))
-    println(convert(RegexDef.check("a|(bc)")))
-    val a = convert(RegexDef.check("a*"))
   }
   
   def convert(expr:Expr):StateGraph = expr match {
@@ -56,7 +54,7 @@ object Reg2NFA {
   def move(c:Char):Set[State] = 
     epsClosure.map((s:State) => 
       if (s.relationMap.contains(c)) 
-        s.relationMap(c)
+        s.relationMap(c).map(ss => ss.epsClosure).flatten
       else Set()
     ).flatten
   
@@ -70,7 +68,8 @@ class StateGraph(val list:List[State], val startState:State, val endState:State)
         println(ss._1 + " : " + ss._2)
       })
     })
-    "epsClosure: " + startState.epsClosure.toString
+    "epsClosure: " + startState.epsClosure.toString + '\n' + 
+    "move: " + startState.move('a')
   }
 }
 
