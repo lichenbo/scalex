@@ -38,7 +38,7 @@ object NFA2DFA {
     return sg 
   }
   
-  class StateGraph (startState:State){
+  class StateGraph (val startState:State){
     val set:mutable.Set[State] = mutable.Set[State]()
     val endState:mutable.Set[State] = mutable.Set[State]()
 
@@ -75,6 +75,7 @@ object NFA2DFA {
   class State (val nfaStateList:Set[Reg2NFA.State]){
     var built:Boolean = false
     val relationMap:mutable.HashMap[Char,State] = mutable.HashMap[Char,State]()
+    def move(c:Char):State = relationMap(c)
     override def toString () = {
       hashCode.toString + '\n' + "nfaStates:" + nfaStateList + '\n'
     }
