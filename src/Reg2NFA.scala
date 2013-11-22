@@ -1,6 +1,6 @@
 import scala.collection.mutable
 
-object Reg2eDFA {
+object Reg2NFA {
   def main(args:Array[String]) {
     println(convert(RegexDef.check("a|bc")))
     println(convert(RegexDef.check("a|(bc)")))
