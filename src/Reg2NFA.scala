@@ -54,14 +54,19 @@ object Reg2NFA {
 
 class State {
   val relationMap = new mutable.HashMap[Char,mutable.Set[State]] with mutable.MultiMap[Char,State]
-  override def toString() = {
-    relationMap.mkString + hashCode
-  }
+
+  def epsClosure: Set[State] = if (relationMap.contains('@')) relationMap('@').toSet | relationMap('@').toSet.flatMap((s:State) => s.epsClosure) + this else Set()
 }
 
 class StateGraph(val list:List[State], val startState:State, val endState:State){ 
   override def toString() = {
-    startState.toString
+    list.map(s => {
+      println(s)
+      s.relationMap.map(ss => {
+        println(ss._1 + " : " + ss._2)
+      })
+    })
+    "epsClosure: " + startState.epsClosure.toString
   }
 }
 
