@@ -3,6 +3,8 @@ import scala.collection.mutable
 object Reg2eDFA {
   def main(args:Array[String]) {
     println(convert(RegexDef.check("a|bc")))
+    println(convert(RegexDef.check("a|(bc)")))
+    val a = convert(RegexDef.check("a*"))
   }
   
   def convert(expr:Expr):StateGraph = expr match {
@@ -15,30 +17,36 @@ object Reg2eDFA {
     case Union(e1: Expr,e2: Expr) => {
       val s1 = new State
       val s2 = new State
-      s1.relationMap addBinding('@',convert(e1).startState)
-      s1.relationMap addBinding ('@',convert(e2).startState)
-      convert(e1).endState.relationMap addBinding ('@',s2)
-      convert(e2).endState.relationMap addBinding ('@',s2)
-      new StateGraph(List(s1,s2):::convert(e1).list:::convert(e2).list, s1, s2)
+      val g1 = convert(e1)
+      val g2 = convert(e2)
+      s1.relationMap addBinding('@',g1.startState)
+      s1.relationMap addBinding ('@',g2.startState)
+      g1.endState.relationMap addBinding ('@',s2)
+      g2.endState.relationMap addBinding ('@',s2)
+      new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
     }
     case Concat(e1,e2) => {
       val s1 = new State
       val s2 = new State
-      s1.relationMap addBinding ('@', convert(e1).startState)
-      convert(e2).endState.relationMap addBinding ('@', s2)
-      new StateGraph(List(s1,s2):::convert(e1).list:::convert(e2).list, s1, s2)
+      val g1 = convert(e1)
+      val g2 = convert(e2)
+      s1.relationMap addBinding ('@', g1.startState)
+      g1.endState.relationMap addBinding ('@', g2.startState)
+      g2.endState.relationMap addBinding ('@', s2)
+      new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
     }
     case Star(e) => {
       val s1 = new State
       val s2 = new State
       val s3 = new State
       val s4 = new State
+      val g = convert(e)
       s1.relationMap addBinding ('@', s2)
-      s2.relationMap addBinding ('@', convert(e).startState)
-      convert(e).endState.relationMap addBinding ('@', s3)
+      s2.relationMap addBinding ('@', g.startState)
+      g.endState.relationMap addBinding ('@', s3)
       s3.relationMap addBinding ('@', s2)
       s3.relationMap addBinding ('@', s4)
-      new StateGraph(List(s1,s2,s3,s4):::convert(e).list, s1, s4)
+      new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
     }
   }
   
@@ -47,7 +55,7 @@ object Reg2eDFA {
 class State {
   val relationMap = new mutable.HashMap[Char,mutable.Set[State]] with mutable.MultiMap[Char,State]
   override def toString() = {
-    relationMap.mkString
+    relationMap.mkString + hashCode
   }
 }
 
