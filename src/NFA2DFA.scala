@@ -1,7 +1,7 @@
 import scala.collection.mutable
 object NFA2DFA {
   def main(args:Array[String]) {
-    println(convert(Reg2NFA.convert(RegexDef.check("a|bc"))))
+    println(convert(Reg2NFA.convert(RegexDef.check("a|b*c"))))
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
@@ -21,11 +21,16 @@ object NFA2DFA {
       for (symbol:Char <- symbolTable) {
         val nfaList = for (nfaState:Reg2NFA.State <- s.nfaStateList) 
          yield nfaState.move(symbol)
-        val newState = sg.getState(nfaList.flatten)
-        if (nfaList.flatten.contains(nfa.endState)) {
-          sg.endState.add(newState)
+//        println(s.nfaStateList)
+//        println(symbol)
+//        println(nfaList)
+        if (nfaList.flatten != Set()) {
+	        val newState = sg.getState(nfaList.flatten)
+	        if (nfaList.flatten.contains(nfa.endState)) {
+	          sg.endState.add(newState)
+	        }
+	        s.relationMap(symbol) = newState 
         }
-        s.relationMap(symbol) = newState 
       }
       s.built = true
     }
@@ -43,6 +48,7 @@ object NFA2DFA {
 
     def getState(nfaStateList:Set[Reg2NFA.State]):State = {
       assert(set.filter(s => s.nfaStateList == nfaStateList).size < 2)  // Confirm the filter result is at most 1. Otherwise the Set mechanics is buggy
+      assert(nfaStateList.size > 0)
       set.filter(s => s.nfaStateList == nfaStateList).headOption match {
         case Some(s) => s
         case None => {
@@ -69,6 +75,9 @@ object NFA2DFA {
   class State (val nfaStateList:Set[Reg2NFA.State]){
     var built:Boolean = false
     val relationMap:mutable.HashMap[Char,State] = mutable.HashMap[Char,State]()
+    override def toString () = {
+      hashCode.toString + '\n' + "nfaStates:" + nfaStateList + '\n'
+    }
 //    override def toString() = {
 //      for (m <- relationMap) {
 //	      println("state: " + hashCode.toString + ": " + m._1 + "->" + m._2)

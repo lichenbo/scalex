@@ -55,7 +55,7 @@ object Reg2NFA {
     epsClosure.map((s:State) => 
       if (s.relationMap.contains(c)) 
         s.relationMap(c).map(ss => ss.epsClosure).flatten
-      else Set()
+      else Set[State]()
     ).flatten
   
 }
