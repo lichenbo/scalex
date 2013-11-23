@@ -35,9 +35,8 @@ object ParserExpr {
 //	  println(RegexDef.check("(a|b|c)d|e"))
 //	  println(RegexDef.check("(ab)*"))
 //	  println(RegexDef.check("(a|b*|c)*d*|e*"))
-	  println(RegexDef.preprocess("a\\n"))
-	  println(RegexDef.preprocess("([a-z]|[A-Z]_)*"))
 	  println(RegexDef.check("a\\n"))
+	  println(RegexDef.check("\\**"))
 	} 
 }
 
@@ -48,7 +47,6 @@ object RegexDef {
 	private var canConcat = false
 	private var modEscape = false
 
-	val token_pattern = "([a-zA-Z_\b\f\r\t\n ])".r
 	private def canEvaluate (before:Char, current:Char) = pri(before)>=pri(current) 
 	private def eval (c:Char) = {
 			c match {
@@ -90,19 +88,15 @@ object RegexDef {
 	  }
 	  
 		for (regchar <- preprocess(reg).toList) {
-			regchar.toString match {    
-			case token_pattern(c) => {
-				pushChar(c(0))
-				// The escape situation is handled by 
-			}
-			case "\\" => {
+			regchar match {    
+			case '\\' => {
 			  if (modEscape) {
 			    pushChar('\\')
 			  } else {
 			    modEscape = true
 			  }
 			}
-			case "*" => {
+			case '*' => {
 			  if (modEscape)
 			    pushChar('*')
 			  else {  
@@ -114,7 +108,7 @@ object RegexDef {
 			  } 
 			  modEscape = false
 			}
-			case "(" => {
+			case '(' => {
 			  if (modEscape)
 			    pushChar('(')
 			  else {
@@ -126,7 +120,7 @@ object RegexDef {
 			  }
 			  modEscape = false
 			}
-			case ")" => {
+			case ')' => {
 			  if (modEscape)
 			    pushChar(')')
 			  else {
@@ -139,7 +133,7 @@ object RegexDef {
 			  }
 			  modEscape = false
 			}
-			case "|" => {
+			case '|' => {
 			  if (modEscape)
 			    pushChar('|')
 			  else {
@@ -150,6 +144,9 @@ object RegexDef {
 				canConcat = false
 			  }
 			  modEscape = false
+			}
+			case c:Char => {
+				pushChar(c)
 			}
 			}
 		}
