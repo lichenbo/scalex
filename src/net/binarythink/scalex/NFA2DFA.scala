@@ -4,7 +4,7 @@ import scala.collection.mutable
 import net.binarythink.scalex.Reg2NFA
 object NFA2DFA {
   def main(args:Array[String]) {
-    println(convert(Reg2NFA.convert(RegexDef.check("a|bc*"))))
+    println(convert(Reg2NFA.convert(RegexDef.check("ac*"))))
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
@@ -15,11 +15,13 @@ object NFA2DFA {
   	val sg = new StateGraph(startState)
   	buildState(startState)
   	sg.addState(startState)
-  	for (s <- sg.set) {
+  	while (!sg.set.forall(s => s.built)) {
+  	  for (s <- sg.set)
   	  if (!s.built) {
   	    buildState(s)
   	  }
   	}
+    assert(sg.set.forall(s => s.built))
     
     def buildState(s:State) = {
       for (symbol:Char <- symbolTable) {

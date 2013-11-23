@@ -48,6 +48,7 @@ object Reg2NFA {
       s3.relationMap addBinding ('@', s4)
       s1.relationMap addBinding ('@', s4)
       new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
+      
     }
   }
   class State {

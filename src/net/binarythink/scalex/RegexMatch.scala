@@ -15,13 +15,15 @@ object RegexMatch {
 //	  printMatch("\\na","\na")
 //	  printMatch("s[a-z]*","sdfsaf")
 //	  printMatch("_(a|b)*","_aabaa")
+	  for (i <- 1 to 100)
 	  printMatch("a[a-z]*","aff")
-//	  printMatch("(a|f|g|h|i|k|l|m|v|w|x|e)*","aff")
-//	  printMatch("[a-z]*","aff")
+//	  printMatch("af*","aff")
+//	  printMatch("[a-z]*","aff") //Matched
 	}
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {
 	  var curState = sg.startState
+//	  println(sg)
 	  for (c <- str.toList) {
 	    if (curState.relationMap.keySet.contains(c))
 		    curState = curState.move(c)

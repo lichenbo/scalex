@@ -24,15 +24,6 @@ public class ParserExprTest {
 	}
 	@Test
 	public void testReg2NFA1() {
-		Reg2NFA.State s1 = new Reg2NFA.State();
-		Reg2NFA.State s2 = new Reg2NFA.State();
-		Reg2NFA.State s3 = new Reg2NFA.State();
-		Reg2NFA.State s4 = new Reg2NFA.State();
-		Reg2NFA.State s5 = new Reg2NFA.State();
-		Reg2NFA.State s6 = new Reg2NFA.State();
-		Reg2NFA.State s7 = new Reg2NFA.State();
-		Reg2NFA.State s8 = new Reg2NFA.State();
-		Reg2NFA.State s9 = new Reg2NFA.State();
 		
 
 	}
