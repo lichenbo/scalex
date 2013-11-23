@@ -8,6 +8,7 @@ object NFA2DFA {
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
+    println("begin NFA to DFA")
     val symbolTable:Set[Char] = nfa.list.foldLeft(Set[Char]())((ss:Set[Char],s:Reg2NFA.State) => ss | s.relationMap.keys.toSet) -- Set('@')
     assert(symbolTable.contains('@') == false)
     val startState = new State(nfa.startState.epsClosure)
@@ -15,7 +16,7 @@ object NFA2DFA {
   	buildState(startState)
   	sg.addState(startState)
   	for (s <- sg.set) {
-  	  if (s.built == false) {
+  	  if (!s.built) {
   	    buildState(s)
   	  }
   	}

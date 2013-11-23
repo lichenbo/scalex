@@ -35,8 +35,12 @@ object ParserExpr {
 //	  println(RegexDef.check("(a|b|c)d|e"))
 //	  println(RegexDef.check("(ab)*"))
 //	  println(RegexDef.check("(a|b*|c)*d*|e*"))
-	  println(RegexDef.check("a\\n"))
-	  println(RegexDef.check("\\**"))
+//	  println(RegexDef.check("a\\n"))
+//	  println(RegexDef.check("\\**"))
+//	  println(RegexDef.check("[a-zA-Z_][a-zA-Z0-9_]*"))
+//	  println(RegexDef.check("a(c)*"))
+	  println(RegexDef.check("a[a-z]*"))
+//	  println(RegexDef.check("a(f|g|h|i|k|l|m|v|w|x|e)*"))
 	} 
 }
 
@@ -66,15 +70,23 @@ object RegexDef {
 			}
 			}
 	}
+	
+	// Syntactic Suger Definition
 	def preprocess(reg:String): String = {
-	  reg.replaceAllLiterally("[a-z]","(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)")
+	  reg.replaceAllLiterally("[a-zA-Z0-9_]", "([a-zA-Z_]|\\d)")
+	  	 .replaceAllLiterally("[a-zA-Z_]", "([a-zA-Z]|_)")
+	  	 .replaceAllLiterally("[a-zA-Z]", "([a-z]|[A-Z])")
+	  	 .replaceAllLiterally("[a-z]","(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)")
 		 .replaceAllLiterally("[A-Z]","(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)")
+		 .replaceAllLiterally("\\d","(0|1|2|3|4|5|6|7|8|9)")
 		 .replaceAllLiterally("\\b","\b")
 		 .replaceAllLiterally("\\f", "\f")
 		 .replaceAllLiterally("\\r", "\r")
 		 .replaceAllLiterally("\\t", "\t")
 		 .replaceAllLiterally("\\n", "\n")
 	}
+	
+	
 	def check(reg:String):Expr = {
 	  def pushChar(ch:Char) {
 	    while(symbol_stack.length > 0 && canConcat && canEvaluate(symbol_stack.top, '+')) {
@@ -113,7 +125,11 @@ object RegexDef {
 			    pushChar('(')
 			  else {
 				if (canConcat) {
-				  symbol_stack.push('+')
+				  while(symbol_stack.length > 0 && canEvaluate(symbol_stack.top, '+')) {
+					eval(symbol_stack.pop)
+				  }
+				  if (char_stack.length > 0)
+				    symbol_stack.push('+')
 				}
 				symbol_stack.push('(')
 				canConcat = false

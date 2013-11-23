@@ -2,15 +2,22 @@ package net.binarythink.scalex
 
 object RegexMatch {
 	def main(args:Array[String]) {
-	  printMatch("a|bc","ac")
-	  printMatch("a|bc","a")
-	  printMatch("a|(bc)","a")
-	  printMatch("a|(bc)","bc")
-	  printMatch("a|bc*","ac")
-	  printMatch("a|bc*","aac")
-	  printMatch("a|bc*","acccccccccc")
-	  printMatch("(a|b)*c","abbababababc")
-	  printMatch("\\na","\na")
+//	  printMatch("a|bc","ac")
+//	  printMatch("a|bc","a")
+//	  printMatch("a|(bc)","a")
+//	  printMatch("a|(bc)","bc")
+//	  printMatch("a|(bc)", "abc")
+//	  printMatch("a|b|c", "ab")
+//	  printMatch("a|bc*","ac")
+//	  printMatch("a|bc*","aac")
+//	  printMatch("a|bc*","acccccccccc")
+//	  printMatch("(a|b)*c","abbababababc")
+//	  printMatch("\\na","\na")
+//	  printMatch("s[a-z]*","sdfsaf")
+//	  printMatch("_(a|b)*","_aabaa")
+	  printMatch("a[a-z]*","aff")
+//	  printMatch("(a|f|g|h|i|k|l|m|v|w|x|e)*","aff")
+//	  printMatch("[a-z]*","aff")
 	}
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {

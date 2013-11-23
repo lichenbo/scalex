@@ -4,7 +4,7 @@ import scala.collection.mutable
 
 object Reg2NFA {
   def main(args:Array[String]) {
-    println(convert(RegexDef.check("a|bc*")))
+    println(convert(RegexDef.check("(f|g|h|i|k|l|m|v|w|x|e)*")))
   }
   
   def convert(expr:Expr):StateGraph = expr match {
@@ -25,7 +25,7 @@ object Reg2NFA {
       g2.endState.relationMap addBinding ('@',s2)
       new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
     }
-    case Concat(e1,e2) => {
+    case Concat(e1: Expr,e2: Expr) => {
       val s1 = new State
       val s2 = new State
       val g1 = convert(e1)
@@ -35,7 +35,7 @@ object Reg2NFA {
       g2.endState.relationMap addBinding ('@', s2)
       new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
     }
-    case Star(e) => {
+    case Star(e:Expr) => {
       val s1 = new State
       val s2 = new State
       val s3 = new State
@@ -53,7 +53,8 @@ object Reg2NFA {
   class State {
   val relationMap = new mutable.HashMap[Char,mutable.Set[State]] with mutable.MultiMap[Char,State]
 
-  def epsClosure: Set[State] = if (relationMap.contains('@')) relationMap('@').toSet | relationMap('@').toSet.flatMap((s:State) => s.epsClosure) + this else Set()
+  // Use lazy val to avoid recomputation
+  lazy val epsClosure: Set[State] = if (relationMap.contains('@')) relationMap('@').toSet | relationMap('@').toSet.flatMap((s:State) => s.epsClosure) + this else Set(this)
   def move(c:Char):Set[State] = 
     epsClosure.map((s:State) => 
       if (s.relationMap.contains(c)) 
