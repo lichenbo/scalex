@@ -1,0 +1,6 @@
+#include <stdio.h>
+
+int main() {
+	int zero = 0;
+	printf("Hell%d, w%drld!",zero,zero);
+}

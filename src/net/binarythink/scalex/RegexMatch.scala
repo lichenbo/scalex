@@ -10,6 +10,7 @@ object RegexMatch {
 	  printMatch("a|bc*","aac")
 	  printMatch("a|bc*","acccccccccc")
 	  printMatch("(a|b)*c","abbababababc")
+	  printMatch("\\na","\na")
 	}
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {

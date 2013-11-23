@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definition>
+	<token name="NEWLINE" pattern="\n"></token>
+	<token name="LE" pattern="&lt;="></token>
+	<token name="GE" pattern="&gt;="></token>
+	<token name="SPACE" pattern=" |\b|\f|\r|\t" skip=""></token>
+	<token name=""></token></definition>
