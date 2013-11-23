@@ -1,8 +1,10 @@
+package net.binarythink.scalex
+
 import scala.collection.mutable
 
 object Reg2NFA {
   def main(args:Array[String]) {
-    println(convert(RegexDef.check("a|bc")))
+    println(convert(RegexDef.check("a|bc*")))
   }
   
   def convert(expr:Expr):StateGraph = expr match {
@@ -44,6 +46,7 @@ object Reg2NFA {
       g.endState.relationMap addBinding ('@', s3)
       s3.relationMap addBinding ('@', s2)
       s3.relationMap addBinding ('@', s4)
+      s1.relationMap addBinding ('@', s4)
       new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
     }
   }

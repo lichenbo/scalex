@@ -1,7 +1,10 @@
+package net.binarythink.scalex
+
 import scala.collection.mutable
+import net.binarythink.scalex.Reg2NFA
 object NFA2DFA {
   def main(args:Array[String]) {
-    println(convert(Reg2NFA.convert(RegexDef.check("a|b*c"))))
+    println(convert(Reg2NFA.convert(RegexDef.check("a|bc*"))))
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
