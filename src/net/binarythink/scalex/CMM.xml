@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definition>
-	<token name="NEWLINE" pattern="\n"></token>
+	<token name="NEWLINE" pattern="\n" skip="skip"></token>
 	<token name="LE" pattern="&lt;="></token>
 	<token name="GE" pattern="&gt;="></token>
-	<token name="SPACE" pattern=" |\b|\f|\r|\t" skip=""></token>
-	<token name=""></token></definition>
+	<token name="SPACE" pattern="( |\b|\f|\r|\t)( |\b|\f|\r|\t)*" skip="skip"></token>
+	<token name="CHAR" pattern="&lt;|&gt;|#|.|\(|\)|;|,|+|-|\*|/|=|{|}" inner="inner"></token>
+	<token name="INT_CONST" pattern="[0-9][0-9]*" inner="inner"></token>
+	<token name="STR_CONST" pattern='"[a-zA-Z0-9_]*"'></token>
+	<token name="INT" pattern="int"></token>
+</definition>
