@@ -2,24 +2,23 @@ package net.binarythink.scalex
 
 object RegexMatch {
 	def main(args:Array[String]) {
-//	  printMatch("a|bc","ac")
-//	  printMatch("a|bc","a")
-//	  printMatch("a|(bc)","a")
-//	  printMatch("a|(bc)","bc")
-//	  printMatch("a|(bc)", "abc")
-//	  printMatch("a|b|c", "ab")
-//	  printMatch("a|bc*","ac")
-//	  printMatch("a|bc*","aac")
-//	  printMatch("a|bc*","acccccccccc")
-//	  printMatch("(a|b)*c","abbababababc")
-//	  printMatch("\\na","\na")
-//	  printMatch("s[a-z]*","sdfsaf")
-//	  printMatch("_(a|b)*","_aabaa")
-	  for (i <- 1 to 100)
+	  printMatch("a|bc","ac")
+	  printMatch("a|bc","a")
+	  printMatch("a|(bc)","a")
+	  printMatch("a|(bc)","bc")
+	  printMatch("a|(bc)", "abc")
+	  printMatch("a|b|c", "ab")
+	  printMatch("a|bc*","ac")
+	  printMatch("a|bc*","aac")
+	  printMatch("a|bc*","acccccccccc")
+	  printMatch("(a|b)*c","abbababababc")
+	  printMatch("\\na","\na")
+	  printMatch("s[a-z]*","sdfsaf")
+	  printMatch("_(a|b)*","_aabaa")
 	  printMatch("a[a-z]*","aff")
-//	  printMatch("af*","aff")
-//	  printMatch("[a-z]*","aff") //Matched
-	}
+	  printMatch("af*","aff")
+	  printMatch("[a-z]*","aff") 
+	  }
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {
 	  var curState = sg.startState
