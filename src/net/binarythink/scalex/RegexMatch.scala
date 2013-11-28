@@ -65,7 +65,6 @@ object RegexMatch {
 	    matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
 	  } catch {
 	    case MatchFailedException => {
-	      println("Match failed")
 	      ""
 	    }
 	  }

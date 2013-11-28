@@ -1,7 +1,7 @@
 package net.binarythink.scalex
 
 object Scalex {
-    val helloworld = """#include "stdio.h"
+    var helloworld:String = """#include "stdio.h"
 
 int main() {
 	int zero = 0;
@@ -10,8 +10,8 @@ int main() {
   
 	def main(args:Array[String]) {
 	  val loadnode = xml.XML.loadFile("C:\\CMM.xml")
-	  for (token <- loadnode \ "token" if ((token \ "@skip").text != "skip")) {
-//	    println(token \ "@pattern"). 
+	  for (token <- loadnode \ "token") {
+	    helloworld = RegexMatch.matchLeft((token \ "pattern").toString, helloworld)
 	  }
 	  
 	}
