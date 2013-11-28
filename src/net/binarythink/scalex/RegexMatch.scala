@@ -21,7 +21,7 @@ object RegexMatch {
 //	  printMatch("af*","aff")
 //	  printMatch("[a-z]*","aff") //Matched
 	  println(matchLeft("a[a-z]*","aabc_dsf"))
-	}
+}
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {
 	  var curState = sg.startState
