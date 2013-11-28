@@ -43,7 +43,7 @@ object RegexMatch {
 	      curState = curState.move(c)
 	    }
 	    else if (sg.endState.contains(curState)) {
-	      return strSeq.drop(pos).toString
+	      return strSeq.drop(pos).mkString
 	    }
 	    else {
 	      throw MatchFailedException
@@ -61,12 +61,18 @@ object RegexMatch {
 	}
 	
 	def matchLeft(reg:String, str:String): String= {
-	  matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
+	  try {
+	    matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
+	  } catch {
+	    case MatchFailedException => {
+	      println("Match failed")
+	      ""
+	    }
+	  }
 	}
 	
 	def printMatch(reg:String, str:String) = {
 	  if (rmatch(reg,str)) println(reg + " : " + str + " Matched")
 	  else println(reg + " : " + str + " NOT MATCHED!")
 	}
-	
 }
