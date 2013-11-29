@@ -20,7 +20,9 @@ object RegexMatch {
 //	  printMatch("a[a-z]*","babc")
 //	  printMatch("af*","aff")
 //	  printMatch("[a-z]*","aff") //Matched
-	  println(matchLeft("a[a-z]*","aabc_dsf"))
+//	  println(matchLeft("a[a-z]*","aabc_dsf"))
+	  printMatch("\"(a[0-9]*)\"","\"a89\"")
+	  printMatch("(\n)|(<=)|(>=)|(( |\b|\f|\r|\t)( |\b|\f|\r|\t)*)|(<|>|#|.|\\(|\\)|;|,|+|-|\\*|/|=|{|})|([0-9][0-9]*)|(\"([a-zA-Z0-9_]|[Chars]| )*\")|(int)|([a-zA-Z_][a-zA-Z0-9_]*)","include \"stdio.h\"")
 }
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {
@@ -57,11 +59,13 @@ object RegexMatch {
 	}
 	
 	def rmatch(reg:String, str:String): Boolean = {
+	    println("Matching " + reg)
 		rmatch(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
 	}
 	
 	def matchLeft(reg:String, str:String): (String,String)= {
 	  try {
+	    println("Matching " + reg)
 	    matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
 	  } catch {
 	    case MatchFailedException => {

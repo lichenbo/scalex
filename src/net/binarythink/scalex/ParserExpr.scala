@@ -39,8 +39,9 @@ object ParserExpr {
 //	  println(RegexDef.check("\\**"))
 //	  println(RegexDef.check("[a-zA-Z_][a-zA-Z0-9_]*"))
 //	  println(RegexDef.check("a(c)*"))
-	  println(RegexDef.check("a[a-z]*"))
+//	  println(RegexDef.check("a[a-z]*"))
 //	  println(RegexDef.check("a(f|g|h|i|k|l|m|v|w|x|e)*"))
+	  println(RegexDef.check("\"a[Chars]*\""))
 	} 
 }
 
@@ -78,6 +79,7 @@ object RegexDef {
 	  	 .replaceAllLiterally("[a-zA-Z]", "([a-z]|[A-Z])")
 	  	 .replaceAllLiterally("[a-z]","(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)")
 		 .replaceAllLiterally("[A-Z]","(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)")
+		 .replaceAllLiterally("[Chars]","(,|.|?|<|>|/|!|%|$|+|=|-|_)")
 		 .replaceAllLiterally("[0-9]","\\d")
 		 .replaceAllLiterally("\\d","(0|1|2|3|4|5|6|7|8|9)")
 		 .replaceAllLiterally("\\b","\b")

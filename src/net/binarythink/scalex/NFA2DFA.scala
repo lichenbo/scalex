@@ -9,8 +9,11 @@ object NFA2DFA {
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
     println("begin NFA to DFA")
-    if (memozationMap.contains(nfa))
+    if (memozationMap.contains(nfa)) {
+      println("Memorized dfa!")
       return memozationMap(nfa)
+    }
+    println("Do not remember dfa!")
     val symbolTable:Set[Char] = nfa.list.foldLeft(Set[Char]())((ss:Set[Char],s:Reg2NFA.State) => ss | s.relationMap.keys.toSet) -- Set('@') // collect all symbols meaningful
     assert(symbolTable.contains('@') == false)
     val startState = new State(nfa.startState.epsClosure)

@@ -5,13 +5,16 @@ import scala.collection.mutable
 object Reg2NFA {
   val memozationMap:mutable.Map[Expr, StateGraph] = mutable.Map()
   def main(args:Array[String]) {
-    println(convert(RegexDef.check("(f|g|h|i|k|l|m|v|w|x|e)*")))
+    println(convert(RegexDef.check("(f|g|h|i|k|l|m|v|w|x|e|f)*")))
+    println(convert(RegexDef.check("(g|h|i|k|l|m|f)*")))
   }
   
   def convert(expr:Expr):StateGraph = {
-    println("MemoMap:" + memozationMap.keys.foreach((k:Expr) => k.hashCode()))
-    if (Reg2NFA.memozationMap.contains(expr)) {println("Memorized " + expr + "!");return memozationMap(expr)}
-    println("Not memorized " + expr + "!")
+    if (Reg2NFA.memozationMap.contains(expr)) {
+//      println("Memorized " + expr + "! return " + memozationMap(expr));
+      return memozationMap(expr)
+    }
+//    println("Not memorized " + expr + "!")
 
     expr match {
     case Literal(c: Char) => {
