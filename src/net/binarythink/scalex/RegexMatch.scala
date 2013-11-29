@@ -33,7 +33,7 @@ object RegexMatch {
 	  sg.endState.contains(curState)
 	}
 	
-	def matchLeft(sg:NFA2DFA.StateGraph, str:String):String = {
+	def matchLeft(sg:NFA2DFA.StateGraph, str:String):(String,String) = {
 	  var curState = sg.startState
 	  val strSeq = str.toList
 
@@ -43,14 +43,14 @@ object RegexMatch {
 	      curState = curState.move(c)
 	    }
 	    else if (sg.endState.contains(curState)) {
-	      return strSeq.drop(pos).mkString
+	      return (strSeq.take(pos).mkString,strSeq.drop(pos).mkString)
 	    }
 	    else {
 	      throw MatchFailedException
 	    }
 	  }
 	  if (sg.endState.contains(curState)) {
-	    return ""
+	    return (strSeq.mkString,"")
 	  } else {
 	    throw MatchFailedException
 	  }
@@ -60,12 +60,12 @@ object RegexMatch {
 		rmatch(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
 	}
 	
-	def matchLeft(reg:String, str:String): String= {
+	def matchLeft(reg:String, str:String): (String,String)= {
 	  try {
 	    matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
 	  } catch {
 	    case MatchFailedException => {
-	      ""
+	      ("","")	// use (emptyString,emptyString) to mark an error, since an emptyString can never be matched
 	    }
 	  }
 	}
