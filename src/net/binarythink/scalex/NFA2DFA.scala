@@ -1,15 +1,17 @@
 package net.binarythink.scalex
 
 import scala.collection.mutable
-import net.binarythink.scalex.Reg2NFA
 object NFA2DFA {
+  val memozationMap:mutable.Map[Reg2NFA.StateGraph, NFA2DFA.StateGraph] = mutable.Map()
   def main(args:Array[String]) {
     println(convert(Reg2NFA.convert(RegexDef.check("ac*"))))
   }
   
   def convert(nfa:Reg2NFA.StateGraph):StateGraph = {
     println("begin NFA to DFA")
-    val symbolTable:Set[Char] = nfa.list.foldLeft(Set[Char]())((ss:Set[Char],s:Reg2NFA.State) => ss | s.relationMap.keys.toSet) -- Set('@')
+    if (memozationMap.contains(nfa))
+      return memozationMap(nfa)
+    val symbolTable:Set[Char] = nfa.list.foldLeft(Set[Char]())((ss:Set[Char],s:Reg2NFA.State) => ss | s.relationMap.keys.toSet) -- Set('@') // collect all symbols meaningful
     assert(symbolTable.contains('@') == false)
     val startState = new State(nfa.startState.epsClosure)
   	val sg = new StateGraph(startState)
@@ -41,6 +43,7 @@ object NFA2DFA {
       s.built = true
     }
     
+    memozationMap.put(nfa, sg)
     return sg 
   }
   

@@ -7,16 +7,13 @@ int main() {
 	int zero = 0;
 	printf("Hell%d, w%drld!",zero,zero);
 }"""
-    val testString:String = "int include dfdfd"
+    val testString:String = "#include dfdfd"
     val loadnode = xml.XML.loadFile("C:\\CMM.xml")
     val regexAll:String = (for (token <- loadnode\"token") yield (token\"@pattern").text).mkString("(",")|(",")")
     val tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
 
     def main(args:Array[String]) {
-
 	  analyse(testString)
-	  
-	  
 	//helloworld = RegexMatch.matchLeft((token \ "pattern").toString, helloworld)
 	}
     
@@ -33,10 +30,12 @@ int main() {
       val (currentMatch,nextMatch) = RegexMatch.matchLeft(regexAll, nextString)
 	  if (currentMatch == "") {
 		println("Cannot be matched.")
+	  } else if (nextMatch == "") {
+	    println("Match finished.")
 	  } else {
 	    println(convert2Token(currentMatch))
 	    RegexMatch.matchLeft(regexAll, nextMatch)
-	    analyse(nextString)
+	    analyse(nextMatch)
 	  }
       
     }

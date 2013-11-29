@@ -3,16 +3,22 @@ package net.binarythink.scalex
 import scala.collection.mutable
 
 object Reg2NFA {
+  val memozationMap:mutable.Map[Expr, StateGraph] = mutable.Map()
   def main(args:Array[String]) {
     println(convert(RegexDef.check("(f|g|h|i|k|l|m|v|w|x|e)*")))
   }
   
-  def convert(expr:Expr):StateGraph = expr match {
+  def convert(expr:Expr):StateGraph = {
+    if (memozationMap.contains(expr)) memozationMap(expr)
+
+    expr match {
     case Literal(c: Char) => {
       val s1 = new State
       val s2 = new State
       s1.relationMap addBinding (c,s2)
-      new StateGraph (List(s1,s2),s1,s2)
+      val result = new StateGraph (List(s1,s2),s1,s2)
+      memozationMap.put(expr,result)
+      result
     }
     case Union(e1: Expr,e2: Expr) => {
       val s1 = new State
@@ -23,7 +29,9 @@ object Reg2NFA {
       s1.relationMap addBinding ('@',g2.startState)
       g1.endState.relationMap addBinding ('@',s2)
       g2.endState.relationMap addBinding ('@',s2)
-      new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
+      val result = new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
+      memozationMap.put(expr,result)
+      result
     }
     case Concat(e1: Expr,e2: Expr) => {
       val s1 = new State
@@ -33,7 +41,9 @@ object Reg2NFA {
       s1.relationMap addBinding ('@', g1.startState)
       g1.endState.relationMap addBinding ('@', g2.startState)
       g2.endState.relationMap addBinding ('@', s2)
-      new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
+      val result = new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
+      memozationMap.put(expr,result)
+      result
     }
     case Star(e:Expr) => {
       val s1 = new State
@@ -47,8 +57,10 @@ object Reg2NFA {
       s3.relationMap addBinding ('@', s2)
       s3.relationMap addBinding ('@', s4)
       s1.relationMap addBinding ('@', s4)
-      new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
-      
+      val result = new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
+      memozationMap.put(expr,result)
+      result
+    }
     }
   }
   class State {
