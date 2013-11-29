@@ -9,7 +9,9 @@ object Reg2NFA {
   }
   
   def convert(expr:Expr):StateGraph = {
-    if (memozationMap.contains(expr)) memozationMap(expr)
+    println("MemoMap:" + memozationMap.keys)
+    if (Reg2NFA.memozationMap.contains(expr)) memozationMap(expr)
+    println("Not memorized!")
 
     expr match {
     case Literal(c: Char) => {
@@ -18,6 +20,7 @@ object Reg2NFA {
       s1.relationMap addBinding (c,s2)
       val result = new StateGraph (List(s1,s2),s1,s2)
       memozationMap.put(expr,result)
+      
       result
     }
     case Union(e1: Expr,e2: Expr) => {
