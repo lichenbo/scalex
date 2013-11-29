@@ -10,8 +10,8 @@ object Reg2NFA {
   
   def convert(expr:Expr):StateGraph = {
     println("MemoMap:" + memozationMap.keys.foreach((k:Expr) => k.hashCode()))
-    if (Reg2NFA.memozationMap.contains(expr)) {println("Memorized!");memozationMap(expr)}
-    println("Not memorized!")
+    if (Reg2NFA.memozationMap.contains(expr)) {println("Memorized " + expr + "!");return memozationMap(expr)}
+    println("Not memorized " + expr + "!")
 
     expr match {
     case Literal(c: Char) => {
