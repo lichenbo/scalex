@@ -9,8 +9,8 @@ object Reg2NFA {
   }
   
   def convert(expr:Expr):StateGraph = {
-    println("MemoMap:" + memozationMap.keys)
-    if (Reg2NFA.memozationMap.contains(expr)) memozationMap(expr)
+    println("MemoMap:" + memozationMap.keys.foreach((k:Expr) => k.hashCode()))
+    if (Reg2NFA.memozationMap.contains(expr)) {println("Memorized!");memozationMap(expr)}
     println("Not memorized!")
 
     expr match {
@@ -81,16 +81,16 @@ object Reg2NFA {
 }
 
 class StateGraph(val list:List[State], val startState:State, val endState:State){ 
-  override def toString() = {
-    list.map(s => {
-      println(s)
-      s.relationMap.map(ss => {
-        println(ss._1 + " : " + ss._2)
-      })
-    })
-    "epsClosure: " + startState.epsClosure.toString + '\n' + 
-    "move: " + startState.move('a')
-  }
+//  override def toString() = {
+//    list.map(s => {
+//      println(s)
+//      s.relationMap.map(ss => {
+//        println(ss._1 + " : " + ss._2)
+//      })
+//    })
+//    "epsClosure: " + startState.epsClosure.toString + '\n' + 
+//    "move: " + startState.move('a')
+//  }
 }
 
 
