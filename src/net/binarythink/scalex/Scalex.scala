@@ -6,6 +6,7 @@ object Scalex {
     var loadnode = xml.XML.loadFile("CMM.xml")
     var regexAll:String = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
     var tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
+    var skipList:List[String] = null
    
     var reader:io.BufferedSource = null
     var writer:PrintWriter = null
@@ -14,6 +15,7 @@ object Scalex {
       loadnode = xml.XML.loadFile(args(0))
       regexAll = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
       tokenList = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
+      skipList = (for (token <- loadnode\"token" if token.attributes.contains("skip")) yield )
       reader = scala.io.Source.fromFile(args(1))
       writer = new PrintWriter(args(2))
       val content = reader.mkString

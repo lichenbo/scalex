@@ -117,10 +117,10 @@ object ScalexAPP extends SimpleSwingApplication{
           Dialog.showMessage(contents(0), "Cannot be empty", "Empty box", Dialog.Message.Error)
         else {
           lblStatus.text = "Generaing %s, please wait... ".format(txtDestination.text)
-          contents(0).repaint
+          this.pack()
           Scalex.main(Array(txtDefinition.text,txtSource.text,txtDestination.text))
           lblStatus.text = "Generation Complete!"
-          contents(0).repaint
+          this.pack()
         }
     }
     
