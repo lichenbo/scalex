@@ -9,7 +9,7 @@ int main() {
 	printf("Hell%d, w%drld!",zero,zero);
 }"""
     val loadnode = xml.XML.loadFile("C:\\CMM.xml")
-    val regexAll:String = (for (token <- loadnode\"token") yield (token\"@pattern").text).mkString("(",")|(",")")
+    val regexAll:String = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
     val tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
 
     def main(args:Array[String]) {
