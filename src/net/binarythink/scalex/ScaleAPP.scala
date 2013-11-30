@@ -3,9 +3,9 @@ package net.binarythink.scalex
 import scala.swing._
 import scala.swing.event._
 
-object ScalexAPP extends SimpleSwingApplication{
+object ScalexAPP extends SimpleSwingApplication {
   def top = new MainFrame {
-    title = "Scalex -- a simple lexer made with Scala programming language"
+    title = "Scalex"
       val btnDefinition = new Button {
         text = "..."
       }
@@ -32,7 +32,7 @@ object ScalexAPP extends SimpleSwingApplication{
         columns = 20
       }
       val lblStatus = new Label{
-        text = "Welcome"
+        text = "Made by lichenbo(111250075)"
       }
       
       val definitionFileChooser = new FileChooser()
@@ -117,10 +117,8 @@ object ScalexAPP extends SimpleSwingApplication{
           Dialog.showMessage(contents(0), "Cannot be empty", "Empty box", Dialog.Message.Error)
         else {
           lblStatus.text = "Generaing %s, please wait... ".format(txtDestination.text)
-          this.pack()
           Scalex.main(Array(txtDefinition.text,txtSource.text,txtDestination.text))
           lblStatus.text = "Generation Complete!"
-          this.pack()
         }
     }
     

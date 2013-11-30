@@ -7,6 +7,7 @@ object Scalex {
     var regexAll:String = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
     var tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
     var skipList:List[String] = null
+    var innerList:List[String] = null
    
     var reader:io.BufferedSource = null
     var writer:PrintWriter = null
@@ -15,7 +16,9 @@ object Scalex {
       loadnode = xml.XML.loadFile(args(0))
       regexAll = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
       tokenList = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
-      skipList = (for (token <- loadnode\"token" if token.attributes.contains("skip")) yield )
+      skipList = (for (token <- loadnode\"token" if (token\"@skip").text == "skip") yield ((token\"@name").text)).toList
+      innerList = (for (token <- loadnode\"token" if (token\"@inner").text == "inner") yield ((token\"@name").text)).toList
+      println(skipList)
       reader = scala.io.Source.fromFile(args(1))
       writer = new PrintWriter(args(2))
       val content = reader.mkString
@@ -43,12 +46,22 @@ object Scalex {
 	  } else if (nextMatch == "") {
 	    val token = convert2Token(currentMatch)
 	    println(token)
-	    writer.println(token)
+	    if (!skipList.contains(token)) {
+	      if (innerList.contains(token))
+	        writer.println(token+'\t'+currentMatch)
+	      else
+	        writer.println(token)
+	    }
 	    println("Match finished.")
 	  } else {
 	    val token = convert2Token(currentMatch)
 	    println(token)
-	    writer.println(token)
+	    if (!skipList.contains(token)) {
+	      if (innerList.contains(token))
+	        writer.println(token+'\t'+currentMatch)
+	      else
+	        writer.println(token)
+	    }
 	    analyse(nextMatch)
 	  }
       

@@ -6,7 +6,7 @@
 	<token name="SPACE" pattern="( |\b|\f|\r|\t)( |\b|\f|\r|\t)*" skip="skip"></token>
 	<token name="CHAR" pattern="&lt;|&gt;|#|.|\(|\)|;|,|+|-|\*|/|=|{|}" inner="inner"></token>
 	<token name="INT_CONST" pattern="[0-9][0-9]*" inner="inner"></token>
-	<token name="STR_CONST" pattern='"([a-zA-Z0-9_]|[Chars]| )*"'></token>
+	<token name="STR_CONST" pattern='"([a-zA-Z0-9_]|[Chars]| )*"' inner="inner"></token>
 	<token name="INT" pattern="int"></token>
-	<token name="IDENTIFIER" pattern="[a-zA-Z_][a-zA-Z0-9_]*"></token>
+	<token name="IDENTIFIER" pattern="[a-zA-Z_][a-zA-Z0-9_]*" inner="inner"></token>
 </definition>
