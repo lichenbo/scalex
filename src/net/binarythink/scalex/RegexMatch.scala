@@ -23,8 +23,8 @@ object RegexMatch {
 //	  println(matchLeft("a[a-z]*","aabc_dsf"))
 //	  printMatch("\"([a-zA-Z0-9_]*)\"","\"a89\"")
 //	  println(matchLeft("(\\n)|(<=)|(>=)|(( |\\b|\\f|\\r|\\t)( |\\b|\\f|\\r|\\t)*)|(<|>|#|.|\\(|\\)|;|,|+|-|\\*|/|=|{|})|([0-9][0-9]*)|(\"([a-zA-Z0-9_]|[Chars])*\")|(int)|([a-zA-Z_][a-zA-Z0-9_]*)","include \"stdio.h\""))
-//	  println(matchLeft("(\\n)|(<=)|(>=)|(( |\\b|\\f|\\r|\\t)( |\\b|\\f|\\r|\\t)*)|(<|>|#|.|\\(|\\)|;|,|+|-|\\*|/|=|{|})|([0-9][0-9]*)|(\"([a-zA-Z0-9_]| )*\")|(int)|([a-zA-Z_][a-zA-Z0-9_]*)","include \"stdio.h\""))
-	  println(matchLeft("\"([a-z]| )*\"","include \"stdioh\""))
+//	  println(matchLeft("(\"([a-zA-Z0-9_]| )*\")|([a-zA-Z_][a-zA-Z0-9_]*)","include \"stdioh\""))
+//	  println(matchLeft("(\"([a-zA-Z0-9_]| )*\")","include \"stdioh\""))
 }
 	
 	def rmatch(sg:NFA2DFA.StateGraph, str:String): Boolean = {
@@ -43,7 +43,6 @@ object RegexMatch {
 
 	  for (pos <- 0 to strSeq.size-1) {
 	    val c = strSeq(pos)
-	    println(c)
 	    if (curState.relationMap.keySet.contains(c)) {
 	      curState = curState.move(c)
 	    }
@@ -63,13 +62,13 @@ object RegexMatch {
 	
 	def rmatch(reg:String, str:String): Boolean = {
 	    println("Matching " + reg)
-		rmatch(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
+		rmatch(NFA2DFA.convert(Reg2NFA.beginConvert(RegexDef.check(reg))),str)
 	}
 	
 	def matchLeft(reg:String, str:String): (String,String)= {
 	  try {
 	    println("Matching " + reg)
-	    matchLeft(NFA2DFA.convert(Reg2NFA.convert(RegexDef.check(reg))),str)
+	    matchLeft(NFA2DFA.convert(Reg2NFA.beginConvert(RegexDef.check(reg))),str)
 	  } catch {
 	    case MatchFailedException => {
 	      ("","")	// use (emptyString,emptyString) to mark an error, since an emptyString can never be matched

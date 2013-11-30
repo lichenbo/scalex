@@ -9,11 +9,20 @@ object Reg2NFA {
     println(convert(RegexDef.check("(g|h|i|k|l|m|f)*")))
   }
   
-  def convert(expr:Expr):StateGraph = {
-    if (Reg2NFA.memozationMap.contains(expr)) {
-//      println("Memorized " + expr + "! return " + memozationMap(expr));
+  def beginConvert(expr:Expr):StateGraph = {
+    if (memozationMap.contains(expr)) {
       return memozationMap(expr)
     }
+    val result = convert(expr)
+    memozationMap.put(expr,result)
+    result
+  }
+  
+  def convert(expr:Expr):StateGraph = {
+//    if (Reg2NFA.memozationMap.contains(expr)) {
+//      println("Memorized " + expr + "! return " + memozationMap(expr));
+//      return memozationMap(expr)
+//    }
 //    println("Not memorized " + expr + "!")
 
     expr match {
@@ -22,7 +31,6 @@ object Reg2NFA {
       val s2 = new State
       s1.relationMap addBinding (c,s2)
       val result = new StateGraph (List(s1,s2),s1,s2)
-      memozationMap.put(expr,result)
       
       result
     }
@@ -36,7 +44,6 @@ object Reg2NFA {
       g1.endState.relationMap addBinding ('@',s2)
       g2.endState.relationMap addBinding ('@',s2)
       val result = new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
-      memozationMap.put(expr,result)
       result
     }
     case Concat(e1: Expr,e2: Expr) => {
@@ -48,7 +55,6 @@ object Reg2NFA {
       g1.endState.relationMap addBinding ('@', g2.startState)
       g2.endState.relationMap addBinding ('@', s2)
       val result = new StateGraph(List(s1,s2):::g1.list:::g2.list, s1, s2)
-      memozationMap.put(expr,result)
       result
     }
     case Star(e:Expr) => {
@@ -64,7 +70,6 @@ object Reg2NFA {
       s3.relationMap addBinding ('@', s4)
       s1.relationMap addBinding ('@', s4)
       val result = new StateGraph(List(s1,s2,s3,s4):::g.list, s1, s4)
-      memozationMap.put(expr,result)
       result
     }
     }
