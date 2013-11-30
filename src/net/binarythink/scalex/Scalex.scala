@@ -3,22 +3,23 @@ package net.binarythink.scalex
 import java.io._;
 
 object Scalex {
-    val helloworld:String = """
-#include "stdio.h"
-
-int main() {
-	int zero = 0;
-	printf("Hell%d, w%drld!",zero,zero);
-}"""
-    val loadnode = xml.XML.loadFile("CMM.xml")
-    val regexAll:String = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
-    val tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
-    var writer:PrintWriter = null;
+    var loadnode = xml.XML.loadFile("CMM.xml")
+    var regexAll:String = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
+    var tokenList:List[(String,String)] = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
+   
+    var reader:io.BufferedSource = null
+    var writer:PrintWriter = null
 
     def main(args:Array[String]) {
-      writer = new PrintWriter("helloworld.token")
-	  analyse(helloworld)
+      loadnode = xml.XML.loadFile(args(0))
+      regexAll = ((for (token <- loadnode\"token") yield (token\"@pattern").text)).mkString("(",")|(",")")
+      tokenList = (for (token <- loadnode\"token") yield ((token\"@pattern").text,(token\"@name").text)).toList
+      reader = scala.io.Source.fromFile(args(1))
+      writer = new PrintWriter(args(2))
+      val content = reader.mkString
+	  analyse(content)
 	  writer.close
+	  reader.close
 	}
     
     def convert2Token(str:String):String = {
